@@ -1,0 +1,64 @@
+version: "3.3"
+
+
+services: 
+
+  modelo1:
+      build: ./modelo1/app
+      image: modelo1
+      ports:
+        - 8000:8000
+      stdin_open: true
+      tty: true
+      volumes:
+        - ./modelo1/app:/usr/src/app
+      depends_on:
+        - timescaledb
+
+  modelo2:
+      build: ./modelo2/app
+      image: modelo2
+      ports:
+        - 8007:8007
+      stdin_open: true
+      tty: true
+      volumes:
+        - ./modelo2/app:/usr/src/app
+      depends_on:
+        - timescaledb
+
+  bdconapi:
+      build: ./docker-bdconapi-python/appbdconexion
+      image: bdconexion
+      ports:
+        - 8001:8001
+      stdin_open: true
+      tty: true
+      volumes:
+        - ./docker-bdconapi-python/appbdconexion:/usr/src/appbdconexion
+      depends_on:
+        - timescaledb
+
+  obtencion-datos-generacion:
+      build: ./obtencion-datos-generacion/app
+      image: obtencion-datos-generacion
+      ports:
+        - 8008:8008
+      stdin_open: true
+      tty: true
+      volumes:
+        - ./obtencion-datos-generacion/app:/usr/src/app
+      depends_on:
+        - timescaledb
+
+  timescaledb:
+      image: timescale/timescaledb:latest-pg14
+      ports:
+        - 5432:5432
+      environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=password
+      volumes:
+        - ./localfolder/database:/var/lib/postgresql/data
+
+

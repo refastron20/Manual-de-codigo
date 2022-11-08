@@ -1,0 +1,4 @@
+*.pyc
+*.pickle
+*.out
+./docker-modelos-python/localfolder/database

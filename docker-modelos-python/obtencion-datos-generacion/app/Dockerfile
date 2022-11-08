@@ -1,0 +1,11 @@
+FROM python:3.8
+COPY . /usr/src/app
+WORKDIR /usr/src/app
+
+RUN pip install -r requirements.txt
+RUN pip install psycopg2
+RUN pip install requests
+RUN pip install numpy
+RUN pip install pandas
+
+ENTRYPOINT uvicorn --host 0.0.0.0 main:app --reload --port 8008
